@@ -3,6 +3,8 @@ const blockWidth = 100
 const blockHeight = 20
 const userStart = [230, 10]
 let currentPosition = userStart
+const boardWidth = 560
+
 class Block {
     constructor(xAxis, yAxis) {
         this.bottomLeft = [xAxis,yAxis]
@@ -11,6 +13,7 @@ class Block {
         this.topRhight = [xAxis + blockWidth, yAxis + blockHeight]
     }
 }
+
 const blocks = [
     new Block(10,270),
     new Block(120,270),
@@ -28,6 +31,7 @@ const blocks = [
     new Block(340,210),
     new Block(450,210),
 ]
+
 function addBlocks() {
     for (let i = 0; i < blocks.length; i++) {
     const block = document.createElement('div')
@@ -37,9 +41,33 @@ function addBlocks() {
     grid.appendChild(block)
     }
 }
+
 addBlocks()
 const user = document.createElement('div')
 user.classList.add('user')
-user.style.left = currentPosition[0] + 'px'
-user.style.bottom = currentPosition[1] + 'px'
+drawUser()
 grid.appendChild(user)
+
+function drawUser() {
+    user.style.left = currentPosition[0] + 'px'
+    user.style.bottom = currentPosition[1] + 'px'
+}
+
+function moveUser(e) {
+    switch(e.key) {
+        case 'ArrowLeft':
+            if (currentPosition[0] > 0) {
+                currentPosition[0] -=10
+                drawUser()
+            }
+            break;
+        case 'ArrowRight':
+            if (currentPosition[0] < boardWidth - blockWidth) {
+                currentPosition[0] +=10
+                drawUser()
+            }
+            break;
+    }
+}
+
+document.addEventListener('keydown', moveUser)
